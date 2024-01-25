@@ -1,0 +1,11 @@
+# Use an official base image
+FROM alpine
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the application files into the container
+COPY src/main/java/com/chei/shop .
+
+# Define the command to run when the container starts
+CMD ["echo", "Hello, World!"]
