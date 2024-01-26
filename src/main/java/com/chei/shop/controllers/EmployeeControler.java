@@ -34,12 +34,10 @@ public class EmployeeControler {
     public ResponseEntity<Employee> saveEmployee(@Valid @RequestBody Employee employee){
         return new ResponseEntity<>(eService.saveEmployee(employee),HttpStatus.CREATED);
     }
-
-    @DeleteMapping("/employee")
-    public ResponseEntity<HttpStatus> deleteEmployee(@RequestParam("id") Long id){
-
-
-        return  new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
+    @DeleteMapping("/")
+    public ResponseEntity<HttpStatus> deleteEmployee(@RequestParam("id") Long id) {
+        eService.deleteEmployee(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     @PutMapping("/employee/{id}")
     public ResponseEntity<Employee> updateEmployee(@PathVariable Long id,@RequestBody Employee employee){
@@ -67,7 +65,7 @@ return new ResponseEntity<List<Employee>>(eService.getEmployeesByName(name),Http
 //        return new ResponseEntity<List<Employee>>(eService.getEmployeeNameAndAgeBetweenTwentyAndThirty(name,age),HttpStatus.OK);
 //    }
 @GetMapping("/employees/filterByNameOrLocation")
-public ResponseEntity<List<Employee>> getEmployeeByNameOrLocation(@PathVariable String name,@PathVariable String location){
+public ResponseEntity<List<Employee>> getEmployeeByNameOrLocation(@RequestParam String name,@RequestParam String location){
     return new ResponseEntity<List<Employee>>(eService.getEmployeesByNameOrLocation(name,location),HttpStatus.OK);
 }
 }
