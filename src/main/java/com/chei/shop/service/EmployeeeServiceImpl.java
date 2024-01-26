@@ -3,6 +3,9 @@ package com.chei.shop.service;
 import com.chei.shop.model.Employee;
 import com.chei.shop.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,8 +17,9 @@ public class EmployeeeServiceImpl implements EmployeeService{
 @Autowired
     private EmployeeRepository eRepository;
     @Override
-    public List<Employee> getEmployees() {
-        return eRepository.findAll();
+    public List<Employee> getEmployees(int pageNumber,int pageSize) {
+        Pageable pages=PageRequest.of(pageNumber,pageSize, Sort.Direction.DESC,"id");
+        return eRepository.findAll(pages).getContent();
     }
     @Override
     public Employee saveEmployee(Employee employee) {
@@ -50,6 +54,27 @@ public class EmployeeeServiceImpl implements EmployeeService{
     public List<Employee> getEmployeesByNameAndLocation(String name, String location) {
         return eRepository.findByNameAndLocation(name, location);
     }
+
+    @Override
+    public List<Employee> getEmployeesByKeyword(String name) {
+        Sort sort= Sort.by(Sort.Direction.ASC,"id");
+        return eRepository.findByNameContaining(name,sort);
+    }
+
+    @Override
+    public List<Employee> getEmployeeByLocation(String location) {
+        return eRepository.findByLocation(location);
+    }
+
+    @Override
+    public List<Employee> getEmployeesByNameOrLocation(String name, String location) {
+        return eRepository.findByNameOrLocation(name, location);
+    }
+
+//    @Override
+//    public List<Employee> getEmployeeNameAndAgeBetweenTwentyAndThirty(String name, int age) {
+//        return eRepository.findByNameAndAgeBetweenTwentyAndThrirty(name,age);
+//    }
 
 
 }

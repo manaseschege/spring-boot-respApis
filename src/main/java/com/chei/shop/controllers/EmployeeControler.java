@@ -22,9 +22,9 @@ public class EmployeeControler {
 
 
     @GetMapping(value = "/employee")
-    public ResponseEntity<List<Employee>> getData(){
+    public ResponseEntity<List<Employee>> getData(@RequestParam int pageNumber,@RequestParam int pageSize){
 
-        return new ResponseEntity<List<Employee>>(eService.getEmployees(), HttpStatus.OK);
+        return new ResponseEntity<List<Employee>>(eService.getEmployees(pageNumber,pageSize), HttpStatus.OK);
     }
     @GetMapping("/employee/{id}")
     public ResponseEntity<Employee> getEmployee(@PathVariable("id") Long id){
@@ -37,6 +37,8 @@ public class EmployeeControler {
 
     @DeleteMapping("/employee")
     public ResponseEntity<HttpStatus> deleteEmployee(@RequestParam("id") Long id){
+
+
         return  new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
     }
     @PutMapping("/employee/{id}")
@@ -52,5 +54,20 @@ return new ResponseEntity<List<Employee>>(eService.getEmployeesByName(name),Http
     public ResponseEntity<List<Employee>> getEmployeesByNameAndLocation(@RequestParam String name, @RequestParam String location){
         return  new ResponseEntity<List<Employee>>(eService.getEmployeesByNameAndLocation(name,location),HttpStatus.OK);
     }
-
+    @GetMapping("/employees/filterByKeyword")
+    public ResponseEntity<List<Employee>> getEmployeesByKeyword(@RequestParam String name){
+        return new ResponseEntity<List<Employee>>(eService.getEmployeesByKeyword(name),HttpStatus.OK);
+    }
+    @GetMapping("/employees/filterByLocation")
+    public ResponseEntity<List<Employee>> getEmployeeByLocation(@RequestParam String location){
+        return new ResponseEntity<List<Employee>>(eService.getEmployeeByLocation(location),HttpStatus.OK);
+    }
+//@GetMapping("/employees/filterByNameAndAge")
+//    public ResponseEntity<List<Employee>> getEmployeeNameAndAgeBetweenTwentyAndThirty(@RequestParam String name, @RequestParam int age){
+//        return new ResponseEntity<List<Employee>>(eService.getEmployeeNameAndAgeBetweenTwentyAndThirty(name,age),HttpStatus.OK);
+//    }
+@GetMapping("/employees/filterByNameOrLocation")
+public ResponseEntity<List<Employee>> getEmployeeByNameOrLocation(@PathVariable String name,@PathVariable String location){
+    return new ResponseEntity<List<Employee>>(eService.getEmployeesByNameOrLocation(name,location),HttpStatus.OK);
+}
 }
